@@ -36,6 +36,9 @@ import vtkColorTransferFunction from '@kitware/vtk.js/Rendering/Core/ColorTransf
 import { colorSpaceToWorking } from 'three/tsl';
 import vtkPolyData from '@kitware/vtk.js/Common/DataModel/PolyData';
 
+// Import interaction setup functions
+import { setupStandardInteractions, setupVRInteractions, setupInteractionModes, makeActorInteractive } from './interactions-js';
+
 //--------------------------------------------------------------------------------------------------------
 
 // Dynamically load WebXR polyfill from CDN for WebVR and Cardboard API backwards compatibility
@@ -64,12 +67,6 @@ const XRHelper = vtkWebXRRenderWindowHelper.newInstance({
   drawControllersRay: true,
 });
 
-// function update() {
-//   const render = renderWindow.render;
-//   renderer.resetCamera();
-//   render();
-// }
-
 // ----------------------------------------------------------------------------
 // Example code
 // ----------------------------------------------------------------------------
@@ -78,12 +75,7 @@ const XRHelper = vtkWebXRRenderWindowHelper.newInstance({
 // this
 // ----------------------------------------------------------------------------
 
-// const coneSource = vtkConeSource.newInstance({ height: 100.0, radius: 50 });
-
-// const reader = vtkXMLPolyDataReader.newInstance();
-
 const vtpReader = vtkXMLPolyDataReader.newInstance();
-
 
 function preventDefaults(e) {
   e.preventDefault();
@@ -98,7 +90,6 @@ function loadFile(file){
   const reader = new FileReader();
   reader.onload = function onLoad(e){
     // createPipeline(reader.result);
-
   };
   reader.readAsArrayBuffer(file);
 }
@@ -115,12 +106,11 @@ function handleFile(e){
   const files = e.target.files || dataTransfer.files;
   if (files.length > 0){
     const file = files[0];
-    // loadFile(file);
     const fileReader = new FileReader();
     fileReader.onload = function onLoad(e){
       vtpReader.parseAsArrayBuffer(fileReader.result);
       mapper.setInputData(vtpReader.getOutputData(0));
-      renderer.addActor(actor)
+      renderer.addActor(actor);
       renderer.resetCamera();
       renderWindow.render();
     };
@@ -135,6 +125,9 @@ fullScreenRenderer.addController(controlPanel);
 const representationSelector = document.querySelector('.representations');
 const vrbutton = document.querySelector('.vrbutton');
 const fileInput = document.getElementById('fileInput');
+const interactionModeSelector = document.querySelector('.interactionMode');
+const colorSelector = document.querySelector('.colorSelect');
+const resetButton = document.getElementById('resetButton');
 
 fileInput.addEventListener('change', handleFile);
 
@@ -154,16 +147,30 @@ vrbutton.addEventListener('click', (e) => {
   }
 });
 
-// -----------------------------------------------------------
-// Make some variables global so that you can inspect and
-// modify objects in your browser's developer console:
-// -----------------------------------------------------------
+// Setup interaction modes
+const interactionModes = setupInteractionModes(renderer, renderWindow, { primary: actor });
+interactionModeSelector.addEventListener('change', (e) => {
+  const selectedMode = e.target.value;
+  interactionModes.setMode(selectedMode);
+});
 
-// global.source = coneSource;
-// global.mapper = mapper;
-// global.actor = actor;
-// global.renderer = renderer;
-// global.renderWindow = renderWindow;
+// Color control
+colorSelector.addEventListener('change', (e) => {
+  const selectedColor = e.target.value;
+  actor.getProperty().setColor(selectedColor);
+  renderWindow.render();
+});
 
-// global.reader = reader;
-// global.fullScreenRenderer = fullScreenRenderer;
+// Reset button
+resetButton.addEventListener('click', () => {
+  actor.reset();
+});
+
+// Make the loaded actor interactive
+makeActorInteractive(actor, renderer, renderWindow);
+
+// Setup standard interactions
+const istyle = setupStandardInteractions(renderer, renderWindow, { primary: actor });
+
+// Setup VR interactions
+setupVRInteractions(XRHelper, renderer, renderWindow, { primary: actor, pickable: [actor] });
