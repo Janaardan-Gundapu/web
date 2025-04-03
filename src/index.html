@@ -3,10 +3,110 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>vtk.js Visualization</title>
+  <title>WebXR Scientific Visualization</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    
+    h1 {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+      z-index: 100;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .controls-panel {
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    #interactionTips {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      border-radius: 5px;
+      max-width: 300px;
+      font-size: 0.9em;
+    }
+    
+    .gesture-indicator {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+      font-size: 1.2em;
+      text-align: center;
+    }
+    
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      color: white;
+      font-size: 1.5em;
+    }
+    
+    .loading-spinner {
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top: 5px solid #fff;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin-right: 15px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
-  <h1>vtk.js Visualization</h1>
+  <h1>WebXR Scientific Visualization</h1>
+  
+  <div id="interactionTips">
+    <h3>Quick Tips:</h3>
+    <p>• Upload a .vtp file to visualize 3D data</p>
+    <p>• Use the VR button to enter immersive mode</p>
+    <p>• Try using pinch gestures to scale the model</p>
+  </div>
+  
+  <div class="gesture-indicator" id="gestureIndicator">
+    <div id="gestureIcon">👌</div>
+    <div id="gestureText">Pinch to Scale</div>
+  </div>
+  
+  <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+    <div class="loading-spinner"></div>
+    <div id="loadingText">Loading model...</div>
+  </div>
+  
   <!-- bundle.js will be injected here by html-webpack-plugin -->
 </body>
 </html>
