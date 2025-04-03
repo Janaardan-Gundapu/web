@@ -1,28 +1,63 @@
-<table>
+<div class="controls-panel">
+  <table style="width: 100%;">
     <tr>
       <td>
-        <button class='vrbutton' style="width: 100%">Send To VR</button>
+        <button class='vrbutton' style="width: 100%; padding: 10px; background-color: #4285f4; color: white; border: none; border-radius: 4px; cursor: pointer;">Send To VR</button>
       </td>
     </tr>
     <tr>
       <td>
-        <select class='representations' style="width: 100%">
+        <label for="representations" style="display: block; margin-top: 10px; color: white;">Rendering Style:</label>
+        <select class='representations' id="representations" style="width: 100%; padding: 5px; margin-top: 5px; border-radius: 4px;">
           <option value='0'>Points</option>
           <option value='1'>Wireframe</option>
           <option value='2' selected>Surface</option>
         </select>
       </td>
-    </tr> 
+    </tr>
     <tr>
       <td>
-        <!--File input for user to upload their file-->
-        <input type="file" id="fileInput" style="width: 100%">
+        <label for="fileInput" style="display: block; margin-top: 10px; color: white;">Upload Model (.vtp):</label>
+        <input type="file" id="fileInput" accept=".vtp" style="width: 100%; margin-top: 5px; color: white;">
       </td>
     </tr>
-
-    <!-- <tr>
+    <tr>
       <td>
-        <input class='resolution' type='range' min='4' max='80' value='6' />
+        <label for="interactionMode" style="display: block; margin-top: 10px; color: white;">Interaction Mode:</label>
+        <select id="interactionMode" class="interactionMode" style="width: 100%; padding: 5px; margin-top: 5px; border-radius: 4px;">
+          <option value="rotate" selected>Rotate</option>
+          <option value="scale">Scale</option>
+          <option value="translate">Translate</option>
+          <option value="inspect">Inspect</option>
+        </select>
       </td>
-    </tr> -->
+    </tr>
+    <tr>
+      <td>
+        <label for="colorSelect" style="display: block; margin-top: 10px; color: white;">Model Color:</label>
+        <select id="colorSelect" class="colorSelect" style="width: 100%; padding: 5px; margin-top: 5px; border-radius: 4px;">
+          <option value="white" selected>White</option>
+          <option value="red">Red</option>
+          <option value="green">Green</option>
+          <option value="blue">Blue</option>
+          <option value="orange">Orange</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button id="resetButton" style="width: 100%; padding: 8px; margin-top: 10px; background-color: #db4437; color: white; border: none; border-radius: 4px; cursor: pointer;">Reset Model</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h4 style="color: white; margin-top: 15px; margin-bottom: 5px;">VR Controls</h4>
+        <div style="color: #ccc; font-size: 0.9em;">
+          <p>• Trigger: Grab/Select</p>
+          <p>• Grip: Scale (two-handed)</p>
+          <p>• Thumbstick: Rotate/Pan</p>
+        </div>
+      </td>
+    </tr>
   </table>
+</div>
