@@ -1,5 +1,10 @@
 // For streamlined VR development install the WebXR emulator extension
 // https://github.com/MozillaReality/WebXR-emulator-extension
+//This extension is no longer available because it doesn't follow best practices for Chrome extensions.
+
+//-----------------------------------------------------------------------------------------------------
+//import all the packages that are needed
+
 
 import '@kitware/vtk.js/favicon';
 
@@ -30,6 +35,8 @@ import controlPanel from './controller.html';
 import vtkColorTransferFunction from '@kitware/vtk.js/Rendering/Core/ColorTransferFunction';
 import { colorSpaceToWorking } from 'three/tsl';
 import vtkPolyData from '@kitware/vtk.js/Common/DataModel/PolyData';
+
+//--------------------------------------------------------------------------------------------------------
 
 // Dynamically load WebXR polyfill from CDN for WebVR and Cardboard API backwards compatibility
 if (navigator.xr === undefined) {
